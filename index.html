@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+  <title>Mash Poa · luxury car booking</title>
+  <!-- Font Awesome 6 (free) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      background: #f5f7fb;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 1.5rem;
+    }
+
+    /* main card – glassmorphic + premium */
+    .booking-card {
+      max-width: 1200px;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-radius: 2.5rem;
+      box-shadow: 0 25px 50px -8px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(255, 255, 255, 0.5) inset;
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      overflow: hidden;
+      transition: all 0.2s ease;
+    }
+
+    /* LEFT: brand & car showcase */
+    .brand-panel {
+      background: linear-gradient(145deg, #0b0e14 0%, #1a1f2b 100%);
+      color: white;
+      padding: 2.5rem 2.2rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      isolation: isolate;
+    }
+
+    .brand-panel::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 30% 40%, rgba(212, 175, 55, 0.12), transparent 70%);
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .brand-panel > * {
+      position: relative;
+      z-index: 2;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 1.9rem;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+    }
+
+    .logo i {
+      color: #d4af37;
+      font-size: 2.2rem;
+      filter: drop-shadow(0 2px 6px rgba(212, 175, 55, 0.4));
+    }
+
+    .logo span {
+      background: linear-gradient(to right, #f5f5f5, #d4af37);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .car-feature {
+      margin: 2rem 0;
+    }
+
+    .car-image {
+      width: 100%;
+      height: 180px;
+      background: url('https://images.unsplash.com/photo-1503376780353-7e6692767b70?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D') center/cover no-repeat;
+      border-radius: 1.5rem;
+      box-shadow: 0 20px 35px -10px rgba(0, 0, 0, 0.6);
+      border: 1px solid rgba(212, 175, 55, 0.3);
+      transition: transform 0.3s ease;
+    }
+
+    .car-image:hover {
+      transform: scale(1.01);
+    }
+
+    .car-name {
+      font-size: 2rem;
+      font-weight: 600;
+      margin-top: 1.25rem;
+      letter-spacing: -0.02em;
+    }
+
+    .car-name small {
+      display: block;
+      font-size: 0.9rem;
+      font-weight: 400;
+      color: #b0b8c5;
+      letter-spacing: 0.5px;
+      margin-top: 0.25rem;
+    }
+
+    .price-tag {
+      display: flex;
+      align-items: baseline;
+      gap: 0.75rem;
+      margin: 1.5rem 0 0.5rem;
+    }
+
+    .price-tag .amount {
+      font-size: 2.8rem;
+      font-weight: 700;
+      color: #d4af37;
+      line-height: 1;
+    }
+
+    .price-tag .per {
+      color: #9aa3b2;
+      font-size: 1rem;
+    }
+
+    .specs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.2rem 1.8rem;
+      margin-top: 2rem;
+      color: #b0b8c5;
+      font-size: 0.9rem;
+    }
+
+    .specs i {
+      color: #d4af37;
+      margin-right: 0.4rem;
+      width: 1.1rem;
+    }
+
+    /* RIGHT: booking form */
+    .form-panel {
+      background: white;
+      padding: 2.5rem 2.2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.6rem;
+    }
+
+    .form-header h2 {
+      font-size: 1.8rem;
+      font-weight: 600;
+      color: #0b0e14;
+      letter-spacing: -0.02em;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .form-header h2 i {
+      color: #d4af37;
+      font-size: 1.7rem;
+    }
+
+    .form-header p {
+      color: #6b7280;
+      font-size: 0.95rem;
+      margin-top: 0.3rem;
+    }
+
+    .input-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .input-group label {
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #4b5563;
+    }
+
+    .input-group label i {
+      color: #d4af37;
+      margin-right: 0.4rem;
+      width: 1rem;
+    }
+
+    .input-group input, 
+    .input-group select {
+      padding: 0.9rem 1.2rem;
+      border-radius: 1.2rem;
+      border: 1.5px solid #e5e7eb;
+      background: #ffffff;
+      font-size: 1rem;
+      transition: all 0.15s ease;
+      outline: none;
+      color: #111827;
+      font-weight: 500;
+      width: 100%;
+    }
+
+    .input-group input:focus, 
+    .input-group select:focus {
+      border-color: #d4af37;
+      box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.15);
+    }
+
+    .input-group input::placeholder {
+      color: #9ca3af;
+      font-weight: 400;
+    }
+
+    .row-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .payment-section {
+      background: #f9fafb;
+      padding: 1.2rem 1.2rem 1.5rem;
+      border-radius: 1.5rem;
+      border: 1px solid #edf2f7;
+    }
+
+    .payment-section h4 {
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #374151;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .payment-section h4 i {
+      color: #d4af37;
+    }
+
+    .card-icons {
+      display: flex;
+      gap: 0.8rem;
+      margin-bottom: 0.5rem;
+      font-size: 1.8rem;
+      color: #1e293b;
+    }
+
+    .card-icons i {
+      opacity: 0.7;
+    }
+
+    .card-icons i.fa-cc-visa { color: #1a1f71; }
+    .card-icons i.fa-cc-mastercard { color: #eb001b; }
+    .card-icons i.fa-cc-amex { color: #002663; }
+
+    .btn-book {
+      background: #0b0e14;
+      border: none;
+      padding: 1.1rem 1.8rem;
+      border-radius: 2rem;
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.8rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      margin-top: 0.4rem;
+      box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.2);
+      border: 1px solid rgba(212, 175, 55, 0.4);
+      letter-spacing: 0.2px;
+    }
+
+    .btn-book i {
+      color: #d4af37;
+      font-size: 1.2rem;
+      transition: transform 0.2s;
+    }
+
+    .btn-book:hover {
+      background: #1a1f2b;
+      transform: translateY(-2px);
+      box-shadow: 0 20px 30px -8px rgba(0, 0, 0, 0.3);
+    }
+
+    .btn-book:hover i {
+      transform: translateX(4px);
+    }
+
+    .btn-book:active {
+      transform: translateY(1px);
+      box-shadow: 0 8px 15px -5px rgba(0, 0, 0, 0.3);
+    }
+
+    .btn-book:disabled {
+      opacity: 0.6;
+      transform: none;
+      pointer-events: none;
+      filter: grayscale(0.5);
+    }
+
+    /* ticket (e‑mail) modal */
+    .ticket-modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(8px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease, visibility 0.3s;
+      padding: 1.5rem;
+    }
+
+    .ticket-modal.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .ticket {
+      background: white;
+      max-width: 420px;
+      width: 100%;
+      border-radius: 2rem;
+      padding: 2rem 1.8rem 1.8rem;
+      box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3);
+      text-align: center;
+      transform: scale(0.9);
+      transition: transform 0.3s cubic-bezier(0.2, 0.9, 0.3, 1.1);
+      border: 1px solid #d4af37;
+    }
+
+    .ticket-modal.active .ticket {
+      transform: scale(1);
+    }
+
+    .ticket i.big-icon {
+      font-size: 3.5rem;
+      color: #d4af37;
+      margin-bottom: 0.5rem;
+    }
+
+    .ticket h3 {
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: #0b0e14;
+      margin-bottom: 0.5rem;
+    }
+
+    .ticket .email-line {
+      background: #f3f4f6;
+      padding: 0.8rem 1.2rem;
+      border-radius: 3rem;
+      font-size: 0.95rem;
+      word-break: break-word;
+      margin: 1rem 0;
+      color: #1f2937;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+
+    .ticket .email-line i {
+      color: #d4af37;
+    }
+
+    .ticket-details {
+      background: #fafafa;
+      border-radius: 1.2rem;
+      padding: 1rem;
+      font-size: 0.9rem;
+      color: #374151;
+      text-align: left;
+      border: 1px dashed #d1d5db;
+      margin: 1rem 0 1.2rem;
+    }
+
+    .ticket-details p {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.3rem 0;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    .ticket-details p:last-child {
+      border-bottom: none;
+    }
+
+    .ticket-details span:first-child {
+      color: #6b7280;
+    }
+
+    .ticket-details span:last-child {
+      font-weight: 600;
+    }
+
+    .ticket .close-btn {
+      background: #0b0e14;
+      border: none;
+      color: white;
+      padding: 0.8rem 2rem;
+      border-radius: 3rem;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 0.95rem;
+      transition: background 0.2s;
+      margin-top: 0.5rem;
+      border: 1px solid #d4af37;
+    }
+
+    .ticket .close-btn:hover {
+      background: #1a1f2b;
+    }
+
+    /* toast */
+    .toast {
+      position: fixed;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: #0b0e14;
+      color: white;
+      padding: 1rem 2rem;
+      border-radius: 3rem;
+      font-weight: 500;
+      box-shadow: 0 20px 30px -8px black;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      z-index: 1100;
+      transition: transform 0.4s cubic-bezier(0.2, 0.9, 0.3, 1.1);
+      border: 1px solid #d4af37;
+      pointer-events: none;
+    }
+
+    .toast.show {
+      transform: translateX(-50%) translateY(0);
+    }
+
+    .toast i {
+      color: #d4af37;
+      font-size: 1.3rem;
+    }
+
+    /* responsive */
+    @media (max-width: 900px) {
+      .booking-card {
+        grid-template-columns: 1fr;
+        border-radius: 2rem;
+      }
+
+      .brand-panel {
+        padding: 2rem 1.8rem;
+      }
+
+      .car-image {
+        height: 150px;
+        background-position: center 40%;
+      }
+
+      .car-name {
+        font-size: 1.8rem;
+      }
+
+      .price-tag .amount {
+        font-size: 2.4rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      body {
+        padding: 0.8rem;
+      }
+
+      .form-panel {
+        padding: 1.8rem 1.5rem;
+      }
+
+      .row-2 {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+
+      .brand-panel {
+        padding: 1.8rem 1.5rem;
+      }
+
+      .ticket {
+        padding: 1.5rem;
+      }
+    }
+
+    /* loader */
+    .spinner {
+      display: inline-block;
+      width: 1.2rem;
+      height: 1.2rem;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      border-top-color: #d4af37;
+      animation: spin 0.7s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- MAIN BOOKING CARD -->
+  <div class="booking-card">
+    <!-- LEFT: LUXURY CAR INFO -->
+    <div class="brand-panel">
+      <div class="logo">
+        <i class="fas fa-gem"></i>
+        <span>MASH<span style="color:#d4af37;">POA</span></span>
+      </div>
+
+      <div class="car-feature">
+        <div class="car-image"></div>
+        <div class="car-name">
+          Mercedes‑Maybach S680
+          <small>2025 · exclusive edition</small>
+        </div>
+        <div class="price-tag">
+          <span class="amount">$1,890</span>
+          <span class="per">/ day</span>
+        </div>
+        <div class="specs">
+          <div><i class="fas fa-bolt"></i> 630 hp</div>
+          <div><i class="fas fa-chair"></i> 4 seats</div>
+          <div><i class="fas fa-gas-pump"></i> V12</div>
+          <div><i class="fas fa-shield-alt"></i> Armored</div>
+        </div>
+      </div>
+
+      <div style="color:#9aa3b2; font-size:0.8rem; letter-spacing:1px; margin-top:1rem;">
+        <i class="fas fa-circle" style="color:#d4af37; font-size:0.45rem; vertical-align:middle;"></i> 
+        complementary chauffeur & concierge
+      </div>
+    </div>
+
+    <!-- RIGHT: BOOKING + PAYMENT -->
+    <div class="form-panel">
+      <div class="form-header">
+        <h2><i class="fas fa-calendar-check"></i> Book your ride</h2>
+        <p>Fill details, pay securely, get ticket by e‑mail.</p>
+      </div>
+
+      <form id="bookingForm">
+        <div class="input-group">
+          <label><i class="fas fa-user"></i> Full name</label>
+          <input type="text" id="fullName" placeholder="James Carter" required>
+        </div>
+
+        <div class="row-2">
+          <div class="input-group">
+            <label><i class="fas fa-envelope"></i> Email</label>
+            <input type="email" id="email" placeholder="james@lux.com" required>
+          </div>
+          <div class="input-group">
+            <label><i class="fas fa-phone"></i> Phone</label>
+            <input type="tel" id="phone" placeholder="+1 212 555 7890" required>
+          </div>
+        </div>
+
+        <div class="row-2">
+          <div class="input-group">
+            <label><i class="fas fa-calendar-day"></i> Pick‑up date</label>
+            <input type="date" id="pickupDate" required>
+          </div>
+          <div class="input-group">
+            <label><i class="fas fa-clock"></i> Pick‑up time</label>
+            <input type="time" id="pickupTime" required value="10:00">
+          </div>
+        </div>
+
+        <!-- PAYMENT SECTION -->
+        <div class="payment-section">
+          <h4><i class="fas fa-lock"></i> Payment details</h4>
+          <div class="card-icons">
+            <i class="fab fa-cc-visa"></i>
+            <i class="fab fa-cc-mastercard"></i>
+            <i class="fab fa-cc-amex"></i>
+            <i class="fab fa-cc-apple-pay" style="margin-left:auto; opacity:0.9;"></i>
+          </div>
+          <div class="input-group">
+            <label><i class="fas fa-credit-card"></i> Card number</label>
+            <input type="text" id="cardNumber" placeholder="4242 4242 4242 4242" maxlength="19" required>
+          </div>
+          <div class="row-2" style="margin-top:0.7rem;">
+            <div class="input-group">
+              <label>Expiry</label>
+              <input type="text" id="expiry" placeholder="MM/YY" maxlength="5" required>
+            </div>
+            <div class="input-group">
+              <label>CVC</label>
+              <input type="text" id="cvc" placeholder="123" maxlength="4" required>
+            </div>
+          </div>
+        </div>
+
+        <button type="submit" class="btn-book" id="bookBtn">
+          <i class="fas fa-ticket-alt"></i> Pay & confirm · $1,890
+        </button>
+      </form>
+
+      <p style="font-size:0.75rem; color:#9ca3af; text-align:center; margin-top:0.2rem;">
+        <i class="fas fa-shield-alt"></i> secure 256‑bit SSL · instant e‑ticket
+      </p>
+    </div>
+  </div>
+
+  <!-- TICKET MODAL (e‑mail simulation) -->
+  <div class="ticket-modal" id="ticketModal">
+    <div class="ticket">
+      <i class="fas fa-check-circle big-icon"></i>
+      <h3>Booking confirmed</h3>
+      <p style="color:#4b5563;">Your luxury car is reserved</p>
+
+      <div class="email-line" id="ticketEmail">
+        <i class="fas fa-envelope"></i> <span>james@lux.com</span>
+      </div>
+
+      <div class="ticket-details" id="ticketDetails">
+        <p><span>Car</span> <span>Mercedes‑Maybach S680</span></p>
+        <p><span>Pick‑up</span> <span id="ticketDateTime">—</span></p>
+        <p><span>Booking ID</span> <span id="ticketId">MP-8241</span></p>
+        <p><span>Total paid</span> <span>$1,890.00</span></p>
+      </div>
+
+      <p style="font-size:0.8rem; color:#6b7280; margin-bottom:1rem;">
+        <i class="fas fa-paper-plane" style="color:#d4af37;"></i> 
+        Ticket sent to your e‑mail
+      </p>
+
+      <button class="close-btn" id="closeTicketBtn">Done</button>
+    </div>
+  </div>
+
+  <!-- TOAST -->
+  <div class="toast" id="toast">
+    <i class="fas fa-check-circle"></i>
+    <span id="toastMessage">Payment successful · ticket sent</span>
+  </div>
+
+  <script>
+    (function() {
+      // ----- DOM refs -----
+      const form = document.getElementById('bookingForm');
+      const bookBtn = document.getElementById('bookBtn');
+      const fullName = document.getElementById('fullName');
+      const email = document.getElementById('email');
+      const phone = document.getElementById('phone');
+      const pickupDate = document.getElementById('pickupDate');
+      const pickupTime = document.getElementById('pickupTime');
+      const cardNumber = document.getElementById('cardNumber');
+      const expiry = document.getElementById('expiry');
+      const cvc = document.getElementById('cvc');
+
+      const ticketModal = document.getElementById('ticketModal');
+      const closeTicketBtn = document.getElementById('closeTicketBtn');
+      const ticketEmail = document.querySelector('#ticketEmail span');
+      const ticketDateTime = document.getElementById('ticketDateTime');
+      const ticketId = document.getElementById('ticketId');
+      const toast = document.getElementById('toast');
+      const toastMessage = document.getElementById('toastMessage');
+
+      // ----- set default date (today + 3 days) & format -----
+      const today = new Date();
+      const future = new Date(today);
+      future.setDate(today.getDate() + 3);
+      const yyyy = future.getFullYear();
+      const mm = String(future.getMonth() + 1).padStart(2, '0');
+      const dd = String(future.getDate()).padStart(2, '0');
+      pickupDate.value = `${yyyy}-${mm}-${dd}`;
+
+      // ----- auto-format card number -----
+      cardNumber.addEventListener('input', function(e) {
+        let value = e.target.value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
+        let formatted = '';
+        for (let i = 0; i < value.length; i++) {
+          if (i > 0 && i % 4 === 0) formatted += ' ';
+          formatted += value[i];
+        }
+        e.target.value = formatted.trim();
+      });
+
+      // ----- expiry MM/YY auto slash -----
+      expiry.addEventListener('input', function(e) {
+        let value = e.target.value.replace(/\//g, '').replace(/[^0-9]/g, '');
+        if (value.length >= 2) {
+          e.target.value = value.slice(0, 2) + '/' + value.slice(2, 4);
+        } else {
+          e.target.value = value;
+        }
+      });
+
+      // ----- generate ticket ID -----
+      function generateTicketId() {
+        return 'MP-' + Math.floor(1000 + Math.random() * 9000);
+      }
+
+      // ----- format date & time for display -----
+      function formatDateTime(dateStr, timeStr) {
+        if (!dateStr || !timeStr) return '—';
+        const dateObj = new Date(dateStr + 'T' + timeStr);
+        if (isNaN(dateObj)) return '—';
+        const options = { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' };
+        const datePart = dateObj.toLocaleDateString('en-US', options);
+        const timePart = dateObj.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+        return `${datePart} · ${timePart}`;
+      }
+
+      // ----- show toast function -----
+      function showToast(message, isSuccess = true) {
+        toastMessage.textContent = message;
+        toast.classList.add('show');
+        setTimeout(() => {
+          toast.classList.remove('show');
+        }, 3200);
+      }
+
+      // ----- simulate payment (with delay) -----
+      function processPayment() {
+        return new Promise((resolve, reject) => {
+          setTimeout(() => {
+            // simple "validation" for demo (all fields required already, just check card)
+            const cardDigits = cardNumber.value.replace(/\s/g, '');
+            if (cardDigits.length < 15) {
+              reject(new Error('Invalid card number'));
+              return;
+            }
+            if (cvc.value.length < 3) {
+              reject(new Error('Invalid CVC'));
+              return;
+            }
+            // random success (99% success to make it realistic)
+            if (Math.random() < 0.02) {
+              reject(new Error('Payment declined by issuer. Try again.'));
+            } else {
+              resolve({ success: true, transactionId: 'txn_' + Date.now() });
+            }
+          }, 900); // simulate network
+        });
+      }
+
+      // ----- submit handler -----
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        // Basic validation (HTML required covers most, but keep safe)
+        if (!fullName.value.trim() || !email.value.trim() || !phone.value.trim()) {
+          showToast('Please fill in your details.', false);
+          return;
+        }
+        if (!pickupDate.value || !pickupTime.value) {
+          showToast('Please select pick‑up date and time.', false);
+          return;
+        }
+        if (!cardNumber.value.trim() || !expiry.value.trim() || !cvc.value.trim()) {
+          showToast('Enter payment details.', false);
+          return;
+        }
+
+        // disable button & show spinner
+        const originalBtnHtml = bookBtn.innerHTML;
+        bookBtn.disabled = true;
+        bookBtn.innerHTML = '<span class="spinner"></span> Processing payment...';
+
+        try {
+          // simulate payment processing
+          await processPayment();
+
+          // Build ticket data
+          const customerEmail = email.value.trim();
+          const dateTimeDisplay = formatDateTime(pickupDate.value, pickupTime.value);
+          const bookingId = generateTicketId();
+
+          // Update modal content
+          ticketEmail.textContent = customerEmail;
+          ticketDateTime.textContent = dateTimeDisplay;
+          ticketId.textContent = bookingId;
+
+          // Show ticket modal (email simulation)
+          ticketModal.classList.add('active');
+
+          // Show success toast
+          showToast('Payment successful · e‑ticket sent', true);
+
+          // optional: clear form? we leave it for demo, but maybe reset some fields?
+          // form.reset(); -> but then pickup date resets to empty, so we don't.
+          // Alternatively keep data but disable? we keep it for realism.
+
+        } catch (error) {
+          showToast(error.message || 'Payment failed. Please try again.', false);
+        } finally {
+          // restore button
+          bookBtn.disabled = false;
+          bookBtn.innerHTML = originalBtnHtml;
+        }
+      });
+
+      // ----- close ticket modal (simulating email view) -----
+      closeTicketBtn.addEventListener('click', function() {
+        ticketModal.classList.remove('active');
+      });
+
+      // ----- close modal by clicking outside (optional) -----
+      ticketModal.addEventListener('click', function(e) {
+        if (e.target === ticketModal) {
+          ticketModal.classList.remove('active');
+        }
+      });
+
+      // ----- prefill some demo data for faster testing (but user can change) -----
+      fullName.value = 'James Carter';
+      email.value = 'james@lux.com';
+      phone.value = '+1 212 555 7890';
+      cardNumber.value = '4242 4242 4242 4242';
+      expiry.value = '12/28';
+      cvc.value = '123';
+
+      // ensure pickup date stays as set (future)
+      // (already set above)
+
+      // small UX: focus on name if empty
+      if (!fullName.value) fullName.focus();
+    })();
+  </script>
+</body>
+</html>
